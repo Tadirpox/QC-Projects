@@ -1,0 +1,124 @@
+#include <iostream>
+using namespace std;
+
+bool trueorfalse(string teams[]){
+    int min=0;
+    for(int i=0; i<26; i++){
+        if(min==0){
+            if(teams[i].length()>0){
+                min=teams[i].length();
+            }
+        }
+        if(teams[i].length() != min && teams[i].length()>0){
+            cout<<"Error, try again"<<endl<<endl;
+            return true;
+        }
+    }
+    return false;
+}
+
+void check(string &result, string teams[]){
+
+    for(int i=0; i<result.length(); i++){
+        while((result[i]>90 || result[i]<65) && (result[i]>122 || result[i]<97)){
+            cout<<"Try again"<<endl;
+            cin>>result;
+        }
+        result[i]= toupper(result[i]);
+        teams[result[i]-65]+=result[i];
+    }
+}
+
+void totalscore(double score[], string result, string teams[]){
+    for(int i=0; i<result.length(); i++){
+        score[result[i]-65] +=i+1;
+    }
+    for(int i=0; i<26; i++){
+        if(teams[i].length()>0){
+            score[i]= score[i] / teams[i].length();
+        }
+    }
+}
+
+void clearArray(string teams[]){
+    for(int i=0; i<26; i++){
+        teams[i]="";
+    }
+}
+
+void clearArray2(double teams[]){
+    for(int i=0; i<26; i++){
+        teams[i]=0;
+    }
+}
+
+void totalAmount(string teams[], int &teamnum, int &playernum){
+    teamnum=0;
+    playernum=0;
+    for(int i=0; i<26; i++){
+        if(teams[i].length()>0){
+            teamnum++;
+            playernum= teams[i].length();
+        }
+    }
+}
+
+int main(){
+    string result;
+    string stop="";
+    bool correct= true;
+    string teams[26]={};
+    double score[26]={};
+    string totalteam[26]={};
+    double totalsco[26]={};
+    int teamnum=0;
+    int playernum=0;
+    while(stop!="done"){
+        while(correct){
+            cout<<"Enter the results of the race(With Upper letters): "<<endl;
+            cin>>result;
+            check(result, teams);
+            correct=trueorfalse(teams);
+            if(correct){
+                clearArray(teams);
+            }
+            //break;
+        }
+        totalscore(score, result, teams);
+        totalAmount(teams, teamnum, playernum);
+
+        cout<<endl<<"There are "<<teamnum<<" teams."<<endl<<endl;
+        cout<<"Each team has "<<playernum<<" runners."<<endl<<endl;
+        
+        cout<<"Team     Score"<<endl;
+        for(int i=0; i<26; i++){
+            if(score[i]>0){
+                totalsco[i]+= score[i];
+                totalteam[i]+= teams[i];
+            }
+            if(totalsco[i]>0){
+                cout<<totalteam[i].substr(0,1)<<"        "<<totalsco[i]<<endl;
+            }
+        }
+
+        clearArray(teams);
+        clearArray2(score);
+        
+        cout<<"Enter more results or write done"<<endl;
+        cin>>stop;
+        if(stop!="done"){
+            correct=true;
+        }
+    }
+    double min=100;
+    string winner= totalteam[0].substr(0,1);
+    for(int i=0; i<26; i++){
+        if(totalsco[i]<min && totalsco[i]>0){
+            min=totalsco[i];
+            winner= totalteam[i].substr(0,1);
+        }
+    }
+    cout<<"The winning team is team "<<winner<<" with a score of "<<min<<".";
+    
+    return 0;
+}
