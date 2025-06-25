@@ -1,0 +1,53 @@
+#include <iostream>
+using namespace std;
+
+int main(){
+    int board[8][8]={0}; // set all space to 0, no queen present
+    int count=0; // count total solutions
+    board[0][0]=1;// start off by making first space a queen
+    int c=0, r;
+
+    next_c: c++;
+    if(c==8) goto print; // when all queens are placed without problem, print out
+    r= -1;
+    
+    next_r: r++;
+    if(r==8) goto backtrack; // backtrack to the last step
+    
+    for(int i=0; i<c; i++){ // checks row
+        if(board[r][i]==1) goto next_r;
+    }
+    for(int i=0; r-i>=0 && c-i>=0; i++){  // checks up diagonal
+        if(board[r-i][c-i]==1) goto next_r;
+    }
+    for(int i=0; r+i<8 && c-i>=0; i++){  //checks down diagonal
+        if(board[r+i][c-i]==1) goto next_r;
+    }
+
+    board[r][c]=1; //set queen
+    goto next_c; //next colm after placing without problem
+
+    backtrack: c--; // backtracking to last step
+    if(c==-1) { // if -1, means no more possibilities left
+        cout<<"Total solutions: "<<count;
+        return 0;
+    }
+    r=0; // find queen from last step
+    while(board[r][c] !=1){
+        r++;
+    }
+    board[r][c]=0; // set last step queen to not present
+
+    goto next_r; // continue the moving of the queen
+    print:  // print the solution
+    for(int i1=0; i1<8; i1++){
+        for (int i2 = 0; i2<8; i2++){
+            cout<<board[i1][i2]<<" ";
+        }
+        cout<<endl;
+    }
+    cout<<endl;
+    count++;
+    goto backtrack; // to find all solutions, keep repeating
+
+}
