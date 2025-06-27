@@ -1,0 +1,94 @@
+#include <iostream>
+using namespace std;
+
+class Rat{
+private: 
+    int n;
+    int d;
+public:
+    Rat(){ //Default constructor
+        n=0;
+        d=1;
+    }
+    Rat(int i){ // 1 int constructor
+        n=i;
+        d=1;
+    }
+    Rat(int i, int j){ //2 int constructor
+        n=i;
+        d=j;
+    }
+
+    Rat operator+(Rat r){ // Add Rats
+        Rat t;
+        t.n = n *r.d + d *r.n;
+        t.d = d * r.d;
+        return t;
+    }
+    Rat operator-(Rat r){ //Subtract Rats
+        Rat t;
+        t.n = n *r.d - d *r.n;
+        t.d = d * r.d;
+        return t;
+    }
+    Rat operator*(Rat r){
+        Rat t;
+        t.n = n * r.n;
+        t.d = d * r.d;
+        return t;
+    }
+    Rat operator/(Rat r){
+        Rat t;
+        t.n = n *r.d;
+        t.d = d * r.n;
+        return t;
+    }
+    Rat reduce(){
+        int less = n;
+        int gcd=1;
+        if(d<less) less = d;
+        Rat t;
+        for(int i =less; i>=1; i--){
+            if(n%i == 0 && d%i == 0){
+                gcd =i;
+                break;
+            }
+        }
+        t.n = n/gcd;
+        t.d = d/gcd;
+        return t;
+    }
+
+    friend ostream& operator<<(ostream& os, Rat r);
+    friend istream& operator>>(istream& is, Rat r);
+};
+
+ostream& operator<<(ostream& os, Rat r){ //Output operator
+    r= r.reduce();
+    if(r.d ==1){ //Print mixed functions
+        os<<r.n<<endl;
+    }else if(r.n>r.d){
+        os<<r.n/r.d << " "<< r.n%r.d<< "/"<<r.d<<endl;
+    }else
+        os<< r.n <<"/"<< r.d<<endl;
+    return os;
+}
+
+istream& operator>>(istream& is, Rat r){ //Input operator
+    is>> r.n; r.d;
+    return is;
+}
+
+
+int main(){
+    Rat a(6,3);
+    Rat b(13,4);
+    Rat c(2,3);
+
+    cout<<a<<b<<c;
+
+
+
+
+    return 0;
+}
