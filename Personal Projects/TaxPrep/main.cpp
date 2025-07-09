@@ -16,8 +16,8 @@ import java.awt.event.ActionEvent;
 
 public class Main extends JFrame implements ActionListener {
 
-	private final int WIDTH = 700;
-	private final int HEIGHT = 500;
+	private final int WIDTH = 1050;
+	private final int HEIGHT = 750;
 	Container contentPane = getContentPane();
 
 	public Main() {
@@ -37,26 +37,10 @@ public class Main extends JFrame implements ActionListener {
 
 		JPanel main = new JPanel();
 		main.setLayout(new GridLayout(1, 3));
-//		JPanel color = new JPanel();
-//		color.setBackground(Color.RED);
-//
-//		color.setLayout(null);
-//		JLabel title = new JLabel("NYC Tax");
-//		title.setBackground(Color.YELLOW);
-//		title.setOpaque(true); // To check size of panel called title
-//		title.setSize(200, 50);
-//		title.setFont(new Font("SansSerif", Font.BOLD, 25)); // Set font and size
-//		title.setHorizontalAlignment(SwingConstants.CENTER); // Center The text
-//
-//		title.setLocation(75, 25); //Set the title in a constant location
-//
-//		color.add(title);
-		NYCTax nyc = new NYCTax();
-		main.add(nyc);
 
-		JPanel color = new JPanel();
-		color.setBackground(Color.BLACK);
-		main.add(color);
+		main.add(new NYCTax());
+		main.add(new NYSTax());
+		main.add(new FEDERALTax());
 
 		contentPane.add(main, BorderLayout.CENTER);
 
